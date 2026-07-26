@@ -1,7 +1,7 @@
 <Window x:Class="SaveRescuer.App.SettingsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Settings" Height="560" Width="700" SizeToContent="Height" MinWidth="620"
+        Title="Settings" Height="620" Width="800" SizeToContent="Height" MinWidth="720"
         Background="{StaticResource Backdrop}" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
 
     <StackPanel Margin="16">
@@ -18,7 +18,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="DataBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="11.5" />
+                    <TextBox x:Name="DataBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="12.5" />
                     <Button Grid.Column="1" Style="{StaticResource GhostButton}" Margin="8,0,0,0"
                             Click="OnBrowseDataClick" Content="Browse…" />
                 </Grid>
@@ -31,7 +31,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="SavesBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="11.5" />
+                    <TextBox x:Name="SavesBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="12.5" />
                     <Button Grid.Column="1" Style="{StaticResource GhostButton}" Margin="8,0,0,0"
                             Click="OnBrowseSavesClick" Content="Browse…" />
                 </Grid>
@@ -42,7 +42,7 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="VaultBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="11.5" />
+                    <TextBox x:Name="VaultBox" Grid.Column="0" FontFamily="{StaticResource Mono}" FontSize="12.5" />
                     <Button Grid.Column="1" Style="{StaticResource GhostButton}" Margin="8,0,0,0"
                             Click="OnBrowseVaultClick" Content="Browse…" />
                 </Grid>

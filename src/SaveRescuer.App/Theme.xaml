@@ -8,8 +8,8 @@
     <SolidColorBrush x:Key="PanelRaised" Color="#1C222C" />
     <SolidColorBrush x:Key="Line" Color="#252C38" />
     <SolidColorBrush x:Key="Text" Color="#E7EAF0" />
-    <SolidColorBrush x:Key="TextMuted" Color="#8C95A6" />
-    <SolidColorBrush x:Key="TextFaint" Color="#5E6675" />
+    <SolidColorBrush x:Key="TextMuted" Color="#9BA4B4" />
+    <SolidColorBrush x:Key="TextFaint" Color="#6E7686" />
     <SolidColorBrush x:Key="Accent" Color="#F0B429" />
     <SolidColorBrush x:Key="AccentDim" Color="#8A6A1C" />
     <SolidColorBrush x:Key="Good" Color="#54C08A" />
@@ -19,31 +19,31 @@
 
     <FontFamily x:Key="Mono">Consolas, Cascadia Mono, Courier New</FontFamily>
 
-    <!-- text -->
+    <!-- text: sized for comfortable reading at 100% scaling -->
     <Style x:Key="H1" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="FontSize" Value="17" />
+        <Setter Property="FontSize" Value="21" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style x:Key="H2" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="15.5" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style x:Key="Label" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource TextMuted}" />
-        <Setter Property="FontSize" Value="11" />
+        <Setter Property="FontSize" Value="13" />
         <Setter Property="TextTrimming" Value="CharacterEllipsis" />
     </Style>
     <Style x:Key="SectionCaption" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource TextFaint}" />
-        <Setter Property="FontSize" Value="10.5" />
+        <Setter Property="FontSize" Value="12" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Margin" Value="0,0,0,6" />
     </Style>
     <Style x:Key="Value" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="FontFamily" Value="{StaticResource Mono}" />
     </Style>
 
@@ -53,8 +53,8 @@
         <Setter Property="Background" Value="{StaticResource PanelRaised}" />
         <Setter Property="BorderBrush" Value="{StaticResource Line}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="12,7" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="14,9" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
@@ -125,7 +125,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Foreground" Value="{StaticResource TextMuted}" />
-        <Setter Property="Padding" Value="6,4" />
+        <Setter Property="Padding" Value="7,5" />
     </Style>
 
     <!-- inputs -->
@@ -135,8 +135,8 @@
         <Setter Property="CaretBrush" Value="{StaticResource Accent}" />
         <Setter Property="BorderBrush" Value="{StaticResource Line}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="8,6" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="10,8" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -152,8 +152,8 @@
     <Style TargetType="ComboBoxItem">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Padding" Value="9,6" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Padding" Value="10,7" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBoxItem">
@@ -176,9 +176,9 @@
         <Setter Property="Background" Value="#10151C" />
         <Setter Property="Foreground" Value="{StaticResource Text}" />
         <Setter Property="BorderBrush" Value="{StaticResource Line}" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="9,5" />
-        <Setter Property="Height" Value="31" />
+        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="Padding" Value="10,6" />
+        <Setter Property="Height" Value="36" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
@@ -196,8 +196,9 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <ContentPresenter Grid.Column="0" />
-                                            <Path Grid.Column="1" Data="M 0 0 L 4 4 L 8 0 Z" Fill="{StaticResource TextMuted}"
-                                                  VerticalAlignment="Center" Margin="6,0,10,0" />
+                                            <Path Grid.Column="1" Data="M 0 0 L 4.5 4.5 L 9 0 Z"
+                                                  Fill="{StaticResource TextMuted}"
+                                                  VerticalAlignment="Center" Margin="6,0,11,0" />
                                         </Grid>
                                     </Border>
                                     <ControlTemplate.Triggers>
@@ -219,7 +220,7 @@
                                AllowsTransparency="True" PopupAnimation="Fade" Focusable="False">
                             <Border Background="{StaticResource PanelRaised}" BorderBrush="{StaticResource Line}"
                                     BorderThickness="1" CornerRadius="5" Margin="0,3,0,0"
-                                    MinWidth="{TemplateBinding ActualWidth}" MaxHeight="320">
+                                    MinWidth="{TemplateBinding ActualWidth}" MaxHeight="360">
                                 <ScrollViewer>
                                     <ItemsPresenter />
                                 </ScrollViewer>
@@ -236,10 +237,31 @@
         </Setter>
     </Style>
 
+    <Style TargetType="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource Text}" />
+        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style TargetType="ToolTip">
+        <Setter Property="Background" Value="#0B0E13" />
+        <Setter Property="Foreground" Value="{StaticResource Text}" />
+        <Setter Property="BorderBrush" Value="{StaticResource Line}" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Padding" Value="9,7" />
+    </Style>
+
+    <Style TargetType="ProgressBar">
+        <Setter Property="Background" Value="#10151C" />
+        <Setter Property="Foreground" Value="{StaticResource Accent}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Height" Value="4" />
+    </Style>
+
     <!-- scrollbars, so the lists do not end in a strip of light grey -->
     <Style TargetType="ScrollBar">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Width" Value="10" />
+        <Setter Property="Width" Value="11" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollBar">
@@ -265,7 +287,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Orientation" Value="Horizontal">
                             <Setter TargetName="PART_Track" Property="IsDirectionReversed" Value="False" />
-                            <Setter Property="Height" Value="10" />
+                            <Setter Property="Height" Value="11" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -295,8 +317,8 @@
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="9,6" />
+        <Setter Property="FontSize" Value="13.5" />
+        <Setter Property="Padding" Value="10,7" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="MenuItem">
@@ -308,7 +330,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <ContentPresenter x:Name="IconHost" Grid.Column="0" ContentSource="Icon"
-                                              Width="16" Height="16" Margin="0,0,9,0" VerticalAlignment="Center" />
+                                              Width="18" Height="18" Margin="0,0,10,0" VerticalAlignment="Center" />
                             <ContentPresenter Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True"
                                               VerticalAlignment="Center" />
                         </Grid>
@@ -330,27 +352,6 @@
         </Setter>
     </Style>
 
-    <Style TargetType="CheckBox">
-        <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-    </Style>
-
-    <Style TargetType="ToolTip">
-        <Setter Property="Background" Value="#0B0E13" />
-        <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Line}" />
-        <Setter Property="FontSize" Value="11.5" />
-        <Setter Property="Padding" Value="8,6" />
-    </Style>
-
-    <Style TargetType="ProgressBar">
-        <Setter Property="Background" Value="#10151C" />
-        <Setter Property="Foreground" Value="{StaticResource Accent}" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Height" Value="4" />
-    </Style>
-
     <!-- save list -->
     <Style x:Key="Grid" TargetType="DataGrid">
         <Setter Property="Background" Value="Transparent" />
@@ -363,8 +364,8 @@
         <Setter Property="AutoGenerateColumns" Value="False" />
         <Setter Property="IsReadOnly" Value="True" />
         <Setter Property="SelectionMode" Value="Extended" />
-        <Setter Property="RowHeight" Value="30" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="RowHeight" Value="36" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="VerticalGridLinesBrush" Value="Transparent" />
         <Setter Property="HorizontalGridLinesBrush" Value="Transparent" />
         <Setter Property="ColumnHeaderStyle">
@@ -372,9 +373,9 @@
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="Background" Value="#131922" />
                     <Setter Property="Foreground" Value="{StaticResource TextMuted}" />
-                    <Setter Property="FontSize" Value="11" />
+                    <Setter Property="FontSize" Value="12.5" />
                     <Setter Property="FontWeight" Value="SemiBold" />
-                    <Setter Property="Padding" Value="10,7" />
+                    <Setter Property="Padding" Value="11,9" />
                     <Setter Property="BorderBrush" Value="{StaticResource Line}" />
                     <Setter Property="BorderThickness" Value="0,0,0,1" />
                     <Setter Property="HorizontalContentAlignment" Value="Left" />
@@ -387,7 +388,7 @@
                     <Setter Property="Background" Value="Transparent" />
                     <Setter Property="BorderThickness" Value="0" />
                     <Setter Property="Foreground" Value="{StaticResource Text}" />
-                    <Setter Property="Padding" Value="10,0" />
+                    <Setter Property="Padding" Value="11,0" />
                     <Setter Property="VerticalAlignment" Value="Center" />
                     <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                     <Style.Triggers>
@@ -426,8 +427,8 @@
         <Setter Property="BorderBrush" Value="{StaticResource Line}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="4" />
-        <Setter Property="Padding" Value="7,3" />
-        <Setter Property="Margin" Value="0,0,6,0" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="Margin" Value="0,0,6,6" />
     </Style>
 
 </ResourceDictionary>

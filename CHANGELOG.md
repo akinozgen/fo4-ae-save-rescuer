@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1
+
+* Readability: type, controls and row heights are larger throughout, and the windows grew with
+  them. The interface was uncomfortably small to read at 100% scaling.
+* Menu entries in the launcher show the icon of the executable they start, and no longer leave the
+  stock light icon gutter behind.
+
 ## 1.0.0
 
 First release.
