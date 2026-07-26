@@ -102,7 +102,7 @@ else rests on.
 
 ## Releases
 
-Pushing a tag such as `v2.0.0` builds and publishes a self-contained Windows executable through
+Pushing a tag such as `v1.0.0` builds and publishes a self-contained Windows executable through
 GitHub Actions; see `.github/workflows/release.yml`.
 
 ## Limitations
