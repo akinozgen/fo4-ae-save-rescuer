@@ -62,7 +62,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.ver.outputs.tag }}
-          name: Fallout 4 AE Save Rescuer ${{ steps.ver.outputs.tag }}
+          name: Fallout 4 Save Rescuer ${{ steps.ver.outputs.tag }}
           generate_release_notes: true
           files: |
             dist/*.zip
@@ -70,8 +70,10 @@ jobs:
           body: |
             Standalone Windows build - no .NET installation required.
 
-            1. Close Fallout 4.
-            2. Run `SaveRescuer.App.exe`.
-            3. Drop a `.fos` save onto the window and follow the on-screen steps.
+            1. Close the game.
+            2. Run `SaveRescuer.App.exe`. Your saves are listed with what each one is missing.
+            3. Pick a save (or drop a `.fos` file onto the window) and press **Rescue this save**.
+            4. Load the save marked `[RESCUED]` from the in-game menu.
 
-            See the README for what placeholders do and how to undo a rescue.
+            Originals are never written to, and a copy of each one is kept before anything is
+            written. See the README for what the operation removes and what it cannot recover.
