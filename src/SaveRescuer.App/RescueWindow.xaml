@@ -1,0 +1,113 @@
+<Window x:Class="SaveRescuer.App.RescueWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Rescue" Height="660" Width="820" MinHeight="520" MinWidth="720"
+        Background="{StaticResource Backdrop}" WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock x:Name="Headline" Style="{StaticResource H1}" />
+            <TextBlock Style="{StaticResource Label}" Margin="0,3,0,0" TextWrapping="Wrap">
+                The missing plugins come out of the save, the forms they own are cleared and the
+                records that referred to them are dropped. Your original file is not written to -
+                the result is written as a new save.
+            </TextBlock>
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource Card}" Padding="14,12" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Style="{StaticResource SectionCaption}" Text="IN-GAME NAME PREFIX" />
+                    <TextBox x:Name="PrefixBox" TextChanged="OnPrefixChanged" />
+                    <TextBlock x:Name="PrefixPreview" Style="{StaticResource Label}" Margin="0,6,0,0"
+                               FontFamily="{StaticResource Mono}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Style="{StaticResource SectionCaption}" Text="HOW FAR TO CUT" />
+                    <CheckBox x:Name="VanillaBox" Click="OnVanillaChanged"
+                              Content="Remove every mod, not just the missing ones"
+                              ToolTip="Leaves a save that needs nothing but the base game and its DLC" />
+                    <CheckBox x:Name="BackupBox" Margin="0,8,0,0" IsChecked="True"
+                              Content="Keep a copy of each original first" />
+                    <CheckBox x:Name="ReplaceTagBox" Margin="0,8,0,0" IsChecked="True"
+                              Content="Replace an existing [tag] instead of stacking" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Style="{StaticResource Card}">
+            <DataGrid x:Name="PlanGrid" Style="{StaticResource Grid}" Margin="0,0,0,0">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="" Width="26">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Ellipse Width="8" Height="8" Fill="{Binding StateBrush}"
+                                         ToolTip="{Binding Result}" HorizontalAlignment="Center" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Character" Binding="{Binding Character}" Width="110" />
+                    <DataGridTextColumn Header="In-game name" Binding="{Binding InGameName}" Width="*" />
+                    <DataGridTextColumn Header="Plugins out" Binding="{Binding PluginsOut}" Width="85" />
+                    <DataGridTextColumn Header="Forms cleared" Binding="{Binding FormsCleared}" Width="100" />
+                    <DataGridTextColumn Header="Records dropped" Binding="{Binding RecordsDropped}" Width="115" />
+                    <DataGridTextColumn Header="Result" Binding="{Binding Result}" Width="150" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Border x:Name="ChecksCard" Grid.Row="3" Style="{StaticResource Card}" Padding="12,10" Margin="0,12,0,0"
+                Visibility="Collapsed">
+            <StackPanel>
+                <TextBlock Style="{StaticResource SectionCaption}" Text="VERIFICATION OF THE LAST SAVE WRITTEN" />
+                <ItemsControl x:Name="ChecksList">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <TextBlock Text="{Binding Mark}" Foreground="{Binding Brush}" FontFamily="{StaticResource Mono}"
+                                           FontSize="11.5" Width="22" />
+                                <TextBlock Text="{Binding Name}" Foreground="{StaticResource Text}" FontSize="11.5"
+                                           Width="230" />
+                                <TextBlock Text="{Binding Detail}" Foreground="{StaticResource TextMuted}" FontSize="11.5"
+                                           TextWrapping="Wrap" MaxWidth="480" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="4" Margin="0,14,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ProgressBar x:Name="Busy" Grid.Row="0" IsIndeterminate="True" Visibility="Collapsed" Margin="0,0,0,10" />
+            <Grid Grid.Row="1">
+                <TextBlock x:Name="StatusLabel" Style="{StaticResource Label}" VerticalAlignment="Center"
+                           TextTrimming="CharacterEllipsis" MaxWidth="480" HorizontalAlignment="Left" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button x:Name="RunButton" Style="{StaticResource PrimaryButton}" Click="OnRunClick"
+                            Padding="18,8" Content="Perform rescue" />
+                    <Button Style="{StaticResource GhostButton}" Click="OnCloseClick" Margin="8,0,0,0"
+                            Padding="18,8" Content="Close" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
