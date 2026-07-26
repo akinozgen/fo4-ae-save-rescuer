@@ -1,0 +1,77 @@
+name: release
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g. v1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          $tag = if ($env:GITHUB_REF -like 'refs/tags/*') { $env:GITHUB_REF -replace 'refs/tags/','' }
+                 else { '${{ github.event.inputs.version }}' }
+          $num = $tag.TrimStart('v')
+          if ($num -notmatch '^\d+\.\d+(\.\d+)?$') { $num = '1.0.0' }
+          "tag=$tag"     | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "number=$num"  | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Test
+        run: dotnet test -c Release
+
+      - name: Publish self-contained executable
+        run: >
+          dotnet publish src/SaveRescuer.App/SaveRescuer.App.csproj
+          -c Release -r win-x64 --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:DebugType=none
+          -p:Version=${{ steps.ver.outputs.number }}
+          -o publish
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "FO4SaveRescuer-${{ steps.ver.outputs.tag }}-win-x64"
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Copy-Item README.md, LICENSE publish/
+          Compress-Archive -Path publish/* -DestinationPath "dist/$name.zip" -Force
+          Get-FileHash "dist/$name.zip" -Algorithm SHA256 |
+            ForEach-Object { "$($_.Hash)  $name.zip" } |
+            Out-File "dist/$name.zip.sha256" -Encoding ascii
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: Fallout 4 AE Save Rescuer ${{ steps.ver.outputs.tag }}
+          generate_release_notes: true
+          files: |
+            dist/*.zip
+            dist/*.sha256
+          body: |
+            Standalone Windows build - no .NET installation required.
+
+            1. Close Fallout 4.
+            2. Run `SaveRescuer.App.exe`.
+            3. Drop a `.fos` save onto the window and follow the on-screen steps.
+
+            See the README for what placeholders do and how to undo a rescue.

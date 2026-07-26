@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SaveRescuer.App/SaveRescuer.App.csproj" />
+    <Project Path="src/SaveRescuer.Core/SaveRescuer.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SaveRescuer.Tests/SaveRescuer.Tests.csproj" />
+  </Folder>
+</Solution>
