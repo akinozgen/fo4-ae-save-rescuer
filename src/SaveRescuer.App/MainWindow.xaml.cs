@@ -364,6 +364,9 @@ public partial class MainWindow : Window
         foreach (var option in options)
         {
             var item = new MenuItem { Header = option.DisplayName, Tag = option };
+            // Each entry carries the icon of the executable it starts, read from the file itself.
+            if (IconExtractor.FromExecutable(option.ExecutablePath) is { } icon)
+                item.Icon = new Image { Source = icon, Width = 16, Height = 16 };
             item.Click += (_, _) => Launch(option);
             menu.Items.Add(item);
         }

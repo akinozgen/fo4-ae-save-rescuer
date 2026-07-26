@@ -273,17 +273,61 @@
         </Setter>
     </Style>
 
-    <!-- context menus -->
+    <!--
+      Context menus are templated rather than merely recoloured: the stock template keeps a light
+      gutter for icons and a light frame around the items whatever the brushes are set to.
+    -->
     <Style TargetType="ContextMenu">
-        <Setter Property="Background" Value="{StaticResource PanelRaised}" />
-        <Setter Property="BorderBrush" Value="{StaticResource Line}" />
         <Setter Property="Foreground" Value="{StaticResource Text}" />
-        <Setter Property="Padding" Value="2" />
+        <Setter Property="HasDropShadow" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Border Background="{StaticResource PanelRaised}" BorderBrush="{StaticResource Line}"
+                            BorderThickness="1" CornerRadius="6" Padding="4" SnapsToDevicePixels="True">
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
     <Style TargetType="MenuItem">
         <Setter Property="Foreground" Value="{StaticResource Text}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Padding" Value="8,5" />
+        <Setter Property="Padding" Value="9,6" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border x:Name="Shell" Background="{TemplateBinding Background}" CornerRadius="4"
+                            Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter x:Name="IconHost" Grid.Column="0" ContentSource="Icon"
+                                              Width="16" Height="16" Margin="0,0,9,0" VerticalAlignment="Center" />
+                            <ContentPresenter Grid.Column="1" ContentSource="Header" RecognizesAccessKey="True"
+                                              VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <!-- Hidden, not collapsed: entries without an icon keep their labels aligned. -->
+                            <Setter TargetName="IconHost" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Shell" Property="Background" Value="#26313F" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource TextFaint}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="CheckBox">
