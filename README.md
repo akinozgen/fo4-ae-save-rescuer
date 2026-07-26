@@ -1,65 +1,84 @@
-# Fallout 4 AE Save Rescuer
+# Fallout 4 Save Rescuer
 
-Open Fallout 4 saves that refuse to load after the Anniversary / next-gen update, without
-reinstalling the mods they were built with.
+Bring back a Fallout 4 save that no longer loads because mods it was built with are gone -
+by rewriting the save so it does not ask for them any more.
 
 ![screenshot](docs/screenshot.png)
 
 ## The problem
 
-A save file records every plugin that was active when it was written. If some of those plugins
-are no longer installed, the game is supposed to show a "this save is missing content" warning
-and let you continue anyway.
+A save records every plugin that was active when it was written, and the objects, actors and
+world changes those plugins owned. When some of those plugins are missing, the game is supposed
+to warn you and let you continue. On current builds that path is unreliable: the warning appears,
+the interface starts misbehaving, and you end up anywhere but in your game. Even when the save
+does open, the next save written over it often will not load at all.
 
-On current game versions that path is unreliable: the warning appears, the interface starts
-misbehaving, and the game often ends up on the Creations page instead of loading the save.
-The result is a character you cannot reach any more.
+Reinstalling the exact mod list is the textbook answer. It is also frequently impossible - mods
+get deleted from the internet, versions move on, and load orders from years ago cannot be
+reproduced.
 
 ## The solution
 
-The warning only exists because the game cannot find plugins the save lists. This tool creates
-an **empty placeholder plugin** for each missing name, so the game finds everything it looks for
-and loads the save normally.
+Take the missing content out of the save itself. Three things have to happen together:
 
-What that means in practice:
+* the missing names are removed from the save's plugin lists, which renumbers the ones that stay;
+* every form ID in the save is rewritten to its new plugin index, or cleared if its plugin is
+  gone - **without moving any slot**, because other sections of the save index that array by
+  position;
+* every change record that referred to a cleared slot is dropped.
 
-* The save loads without the warning dialog, so the broken path is never entered.
-* Content from the missing mods is simply gone from the save - weapons, armour, settlement
-  pieces from those mods disappear. Everything else (your character, level, progress,
-  and every mod you still have installed) stays intact.
-* Load-order positions are preserved, so form IDs from your remaining mods do not shift.
-* Nothing is destructive: real plugins are never overwritten, the load order is backed up
-  before it is touched, and one button undoes the whole operation.
+The result is a save that depends on nothing but the plugins you still have. Your character,
+level, location, quest state and everything owned by surviving plugins come with you. Objects
+that belonged to the missing mods do not - they were the problem.
+
+The original file is never written to. The rescued save is written as a new file in a free manual
+slot, and its in-game name is prefixed (`[RESCUED]` by default) so you can tell it apart in the
+load menu.
 
 ## Usage
 
-1. Close Fallout 4 (the game keeps its plugin files locked while it runs).
-2. Start `FO4SaveRescuer.exe`.
-3. Drag a `.fos` save onto the window, or use **Open save file...** / **Browse my saves**.
-4. Check the plugin table: missing entries are highlighted, entries that exist but are not
-   enabled are flagged too.
-5. Press **Preview fix** to see what would change, then **Rescue this save** to apply it.
-6. Launch the game and load the save.
+1. Close the game.
+2. Start `FO4SaveRescuer.exe`. Your saves are listed with what each one is missing.
+3. Pick a save - or drop a `.fos` file onto the window. The panel on the right shows the
+   character, the plugins the save refers to, and how the rescue is likely to go.
+4. Press **Rescue this save**, review the plan, then **Perform rescue**.
+5. Launch the game and load the save with the `[RESCUED]` prefix.
 
-**Undo last rescue** removes the placeholders it created and restores the previous load order.
+Select several saves at once to work through a batch. **Backups** lists the copies taken before
+each rescue and puts any of them back.
 
-### Paths
+### Options
 
-The tool detects the game's `Data` folder, the active `plugins.txt` and your saves folder
-automatically. Use **change paths** if you keep things elsewhere - Mod Organizer 2 profiles are
-detected and listed, since each profile has its own load order file.
+| Option | What it does |
+| --- | --- |
+| In-game name prefix | Text put in front of the load-menu name. Empty leaves the name alone. |
+| Remove every mod, not just the missing ones | Produces a save that needs only the base game and its DLC. Use it when the load order cannot be trusted at all. |
+| Keep a copy of each original first | Copies the untouched save into the backup folder before writing. |
+| First slot number | Rescued saves are written as `Save<N>` starting here, clear of the numbers the game hands out. |
 
-### A note on placeholders
+### Folders
 
-Placeholders are minimal but valid plugin files: a header, no records, and a marker identifying
-them as generated. The tool only ever deletes files carrying that marker, so if you later install
-the real mod over a placeholder, your file is left alone.
+The game's `Data` folder and your save folder are detected on first run; override them under
+**Settings**. Backups live under `%LOCALAPPDATA%\FO4SaveRescuer` on purpose - the save folder in
+`Documents\My Games` is synced to the cloud and rotated by the game, which is no place to keep
+the only copy of something.
+
+## What to expect
+
+Whether a rescued save holds up depends on how heavy the save is, not on how many plugins were
+missing. From measured runs:
+
+* saves up to roughly 100,000 change forms came back reliably, including one that was missing
+  255 plugins and one written in Survival mode;
+* a save with 196,000 change forms (49 MB) loaded, played, and then rejected the next save
+  written over it. The interface flags saves in that range before you start.
+
+The number the tool shows in the **Change forms** column is the one that matters.
 
 ## Requirements
 
-* Windows
-* Fallout 4 (tested against the current next-gen builds and older 1.10.x saves)
-* No script extender, no in-game dependency; the tool never touches the save file itself
+* Windows, .NET 9 (the published build is self-contained)
+* No script extender, no in-game component, nothing installed into the game folder
 
 ## Building from source
 
@@ -73,23 +92,28 @@ dotnet publish src/SaveRescuer.App -c Release -r win-x64 --self-contained true ^
 Layout:
 
 ```
-src/SaveRescuer.Core   save parsing, environment discovery, placeholder + load-order logic
-src/SaveRescuer.App    WPF interface
-tests/SaveRescuer.Tests unit tests (synthetic saves, no game data needed)
+src/SaveRescuer.Core    save format, diagnosis, surgery, backup vault
+src/SaveRescuer.App     WPF interface
+tests/SaveRescuer.Tests unit tests on synthetic saves - no game data needed
 ```
+
+The parser round-trips an untouched save byte for byte; that test is the foundation everything
+else rests on.
 
 ## Releases
 
-Pushing a tag such as `v1.0.0` builds and publishes a self-contained Windows executable through
+Pushing a tag such as `v2.0.0` builds and publishes a self-contained Windows executable through
 GitHub Actions; see `.github/workflows/release.yml`.
 
 ## Limitations
 
-* Content from missing mods cannot be recovered - this makes the save openable, not complete.
-* If your character is standing inside a location added by a missing mod, the game may not be
-  able to place them. Load an earlier save, or teleport to a vanilla location from the console.
-* Saves themselves are never modified. For cleaning orphaned script data out of a save, use a
-  dedicated save editor.
+* Content from missing mods cannot be recovered. This makes the save playable, not complete.
+* If your character is standing in a location a missing mod added, the game may struggle to place
+  them. Rescue an earlier save, or move somewhere vanilla from the console before saving again.
+* Papyrus script data is left untouched. Script instances belonging to removed mods stay in the
+  file as orphans; the game discards them on load, but a dedicated save editor is the tool for
+  cleaning those out.
+* Very heavy saves may still fail after the operation - see *What to expect*.
 
 ## License
 
